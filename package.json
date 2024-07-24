@@ -1,6 +1,10 @@
 {
   "name": "react-currencies",
   "version": "0.1.0",
+  "author": {
+    "name": "Ivan Kvasnica",
+    "email": "ivan@ikvasnica.com"
+  },
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
