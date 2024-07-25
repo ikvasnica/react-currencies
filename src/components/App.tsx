@@ -1,31 +1,18 @@
-import { FC } from 'react';
 import CurrencyList from './CurrencyList';
-import CurrencyType from '../types/CurrencyType';
+import {useContext, useEffect} from "react";
+import CurrencyContext from "../state/CurrencyContext";
 
-const exampleCurrencies: Array<CurrencyType> = [
-  {
-    currencyCode: 'EUR',
-    currencyName: 'euro',
-    country: 'EMU',
-    amount: 1,
-    rate: 25.5,
-  },
-  {
-    currencyCode: 'USD',
-    currencyName: 'dolar',
-    country: 'Spojené státy',
-    amount: 1,
-    rate: 20,
-  },
-  ];
+const App = () => {
+  const { fetchCurrencies } = useContext(CurrencyContext);
 
-const App: FC = () => {
+  useEffect(() => {
+      fetchCurrencies();
+  }, [fetchCurrencies]);
+
   return (
     <div className='app'>
-      <div className='title'>
         <h1>Currency Converter</h1>
-      </div>
-      <CurrencyList currencies={exampleCurrencies} />
+        <CurrencyList  />
     </div>
   );
 }
