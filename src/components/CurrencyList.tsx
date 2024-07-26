@@ -1,18 +1,25 @@
 import CurrencyType from '../types/CurrencyType';
 import CurrencyLine from './CurrencyLine';
 import {ReactElement} from "react";
+import CurrencyListType from "../types/CurrencyListType";
 
 interface CurrencyListProps {
-    currencies: CurrencyType[],
+    currencyList: CurrencyListType,
 }
 
-const CurrencyList = ({ currencies }: CurrencyListProps) => {
-    const renderedCurrencyLines: ReactElement[] = currencies.map((currency: CurrencyType) => {
+const CurrencyList = ({ currencyList }: CurrencyListProps) => {
+    const renderedCurrencyLines: ReactElement[] = currencyList.currencies.map((currency: CurrencyType) => {
         return <CurrencyLine key={currency.currencyCode} currency={currency} />;
     });
 
     return (
         <div className='currency-list'>
+            {currencyList.ratesUpdatedAt.date && (
+                <h2>Daily rates for {currencyList.ratesUpdatedAt.today
+                    ? 'today'
+                    : currencyList.ratesUpdatedAt.date.toLocaleDateString()
+                }</h2>
+            )}
             <table className='currency-list-table'>
                 <thead>
                     <tr>
