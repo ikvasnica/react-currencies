@@ -1,7 +1,7 @@
 import {useQuery, UseQueryResult} from "@tanstack/react-query";
 import CurrencyType from "../types/CurrencyType";
 
-const API_URL: string = 'https://www.cnb.cz/en/financial-markets/foreign-exchange-market/central-bank-exchange-rate-fixing/central-bank-exchange-rate-fixing/daily.txt';
+const API_URL: string = 'https://thingproxy.freeboard.io/fetch/https://www.cnb.cz/en/financial-markets/foreign-exchange-market/central-bank-exchange-rate-fixing/central-bank-exchange-rate-fixing/daily.txt';
 const API_QUERY_KEY: string = 'currencies';
 
 const transformDataToCurrencies = (data: string): CurrencyType[] => {
