@@ -1,15 +1,13 @@
-import { useContext } from 'react';
 import CurrencyType from '../types/CurrencyType';
 import CurrencyLine from './CurrencyLine';
-import CurrencyContext from "../state/CurrencyContext";
+import {ReactElement} from "react";
 
-const CurrencyList = () => {
-    const {currencies} = useContext(CurrencyContext);
-    if (currencies.length === 0) {
-        return <h2>No currency rates available...</h2>
-    }
+interface CurrencyListProps {
+    currencies: CurrencyType[],
+}
 
-    const renderedCurrencyLines = currencies.map((currency: CurrencyType) => {
+const CurrencyList = ({ currencies }: CurrencyListProps) => {
+    const renderedCurrencyLines: ReactElement[] = currencies.map((currency: CurrencyType) => {
         return <CurrencyLine key={currency.currencyCode} currency={currency} />;
     });
 

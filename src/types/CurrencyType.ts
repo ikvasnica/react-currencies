@@ -1,7 +1,7 @@
 export default interface CurrencyType {
-    currencyCode: string,
-    currencyName: string,
     country: string,
+    currencyName: string,
     amount: number,
+    currencyCode: string,
     rate: number,
 }
