@@ -14,6 +14,7 @@ const getMillisecondsUntilNextWorkingDayAfternoon = (): number => {
     } else if (dayOfWeek === 6) {  // Saturday
         nextWorkingDayAt1430.setDate(nextWorkingDayAt1430.getDate() + 2);  // Add two days to get to Monday
     }
+    console.log('[Refetch Scheduler] Next working day resolved to ', nextWorkingDayAt1430);
 
     return nextWorkingDayAt1430.getTime() - now.getTime();
 }
@@ -23,9 +24,9 @@ const scheduleRefetchForNextWorkingDayAfternoon = (
     currencyDataQueryResult: QueryObserverResult<CurrencyListType>
 ): number => {
     queryClient.setQueryDefaults([API_QUERY_KEY], {enabled: false});
-    console.log('Scheduling for next refetch the next day...');
 
     return window.setTimeout(() => {
+        console.log('[Refetch Scheduler] Scheduled refetching based on a timer running...');
         queryClient.setQueryDefaults([API_QUERY_KEY], {enabled: true});
         currencyDataQueryResult.refetch();
     }, getMillisecondsUntilNextWorkingDayAfternoon());
@@ -36,17 +37,21 @@ const useScheduleRefetch = (currencyDataQueryResult: QueryObserverResult<Currenc
 
     useEffect(() => {
         let timerId: number|null = null;
+        console.log('[Refetch Scheduler] Refetch schedule check...');
 
         if (
             currencyDataQueryResult.data
             && (currencyDataQueryResult.data.ratesUpdatedAt.today || currencyDataQueryResult.data.ratesUpdatedAt.beforeWeekend)
         ) {
             timerId = scheduleRefetchForNextWorkingDayAfternoon(queryClient, currencyDataQueryResult);
+            console.log('[Refetch Scheduler] Refetch scheduled for the next working day.');
         }
 
         return (): void => {
+            console.log('[Refetch Scheduler] Checking for stale timers...');
             if (timerId !== null) {
                 clearTimeout(timerId);
+                console.log('[Refetch Scheduler] Refetch timer cleared.');
             }
         }
     }, [currencyDataQueryResult, queryClient]);

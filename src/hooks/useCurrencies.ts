@@ -28,6 +28,8 @@ const transformDataToCurrencies = (data: string): CurrencyListType => {
     const lines: string[] = data.split('\n');
 
     if (lines.length < 3) {
+        console.error(`[Currency Query] Invalid response from API: `, data);
+
         return {
             ratesUpdatedAt: {date: null, today: false, beforeWeekend: false},
             currencies: [],
@@ -49,14 +51,15 @@ const transformDataToCurrencies = (data: string): CurrencyListType => {
             };
         });
 
-    return {
-        ratesUpdatedAt: getRatesUpdatedAt(lines),
-        currencies,
-    };
+    const ratesUpdatedAt = getRatesUpdatedAt(lines);
+    console.log(`[Currency Query] ${currencies.length} currencies fetched, updated at ${ratesUpdatedAt.date}.`);
+
+    return {ratesUpdatedAt, currencies};
 };
 
 const useCurrencies = (): UseQueryResult<CurrencyListType> => {
     const fetchCurrencies = async (): Promise<string> => {
+        console.log('[Currency Query] Fetching currencies..');
         const response: Response = await fetch(
             API_URL, {
                 method: 'GET',

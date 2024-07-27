@@ -3,11 +3,11 @@ import React, {useEffect, useState} from "react";
 import CurrencySelectOptionType from "../types/CurrencySelectOptionType";
 import ConvertableCurrencyItem from "./ConvertableCurrencyItem";
 import {SingleValue} from "react-select";
+import CurrencyList from "./CurrencyList";
+import CurrencyListType from "../types/CurrencyListType";
 
 interface ConverterProps {
-    currencies: CurrencyType[],
-    selectedCurrency: CurrencyType|null,
-    handleSelectedCurrencyChange: (newSelectedCurrency: CurrencyType) => void,
+    currencyData: CurrencyListType|null,
     isLoading: boolean,
 }
 
@@ -21,9 +21,9 @@ const getCZKCurrency = (): CurrencyType => {
     }
 }
 
-const Converter = ({ currencies, selectedCurrency, handleSelectedCurrencyChange, isLoading }: ConverterProps) => {
+const Converter = ({ currencyData, isLoading }: ConverterProps) => {
     const [currencyAmountBeingEdited, setCurrencyAmountBeingEdited] = useState<string|null>(null);
-
+    const [selectedCurrency, setSelectedCurrency] = useState<CurrencyType|null>(null);
     const [amountInCZK, setAmountInCZK] = useState<number>(0);
     const [convertedAmount, setConvertedAmount] = useState<number>(0);
 
@@ -60,11 +60,11 @@ const Converter = ({ currencies, selectedCurrency, handleSelectedCurrencyChange,
             return;
         }
 
-        const selectedCurrency = currencies.find((currency: CurrencyType ): boolean => {
+        const selectedCurrency = currencyData?.currencies.find((currency: CurrencyType ): boolean => {
             return currency.currencyCode === selectedOption.value;
         }) as CurrencyType;
 
-        handleSelectedCurrencyChange(selectedCurrency);
+        setSelectedCurrency(selectedCurrency);
     }
 
     const handleFocus = (event: React.FormEvent<HTMLInputElement>): void => {
@@ -75,6 +75,9 @@ const Converter = ({ currencies, selectedCurrency, handleSelectedCurrencyChange,
 
     return (
         <div className='currency-converter'>
+            {currencyData && (
+                <CurrencyList currencyList={currencyData} selectedCurrency={selectedCurrency} />
+            )}
             <ConvertableCurrencyItem
                 key="czk"
                 amount={amountInCZK}
@@ -89,7 +92,7 @@ const Converter = ({ currencies, selectedCurrency, handleSelectedCurrencyChange,
                 key="other"
                 amount={convertedAmount}
                 selectedCurrency={selectedCurrency}
-                currencies={currencies}
+                currencies={currencyData ? currencyData.currencies : []}
                 handleAmountChange={handleConvertedAmountChange}
                 handleCurrencyChange={handleCurrencyChange}
                 handleInputFocus={handleFocus}
