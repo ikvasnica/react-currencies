@@ -2,14 +2,15 @@ import CurrencyType from '../types/CurrencyType';
 
 interface CurrentyLineProps {
     currency: CurrencyType,
+    isSelected: boolean,
 }
 
-const CurrencyLine = ({ currency }: CurrentyLineProps) => {
+const CurrencyLine = ({ currency, isSelected }: CurrentyLineProps) => {
     return (
-        <tr>
+        <tr style={isSelected ? {backgroundColor: "hsla(0, 100%, 50%, 0.1)"} : {}}>
             <td>{currency.currencyCode} ({currency.currencyName})</td>
             <td>{currency.country}</td>
-            <td>{currency.rate} CZK / {currency.amount} {currency.currencyCode}</td>
+            <td>{currency.amount} {currency.currencyCode}<br />{currency.rate} CZK</td>
         </tr>
     )
 };

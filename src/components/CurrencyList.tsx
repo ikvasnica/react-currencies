@@ -5,11 +5,18 @@ import CurrencyListType from "../types/CurrencyListType";
 
 interface CurrencyListProps {
     currencyList: CurrencyListType,
+    selectedCurrency: CurrencyType|null,
 }
 
-const CurrencyList = ({ currencyList }: CurrencyListProps) => {
+const CurrencyList = ({ currencyList, selectedCurrency }: CurrencyListProps) => {
     const renderedCurrencyLines: ReactElement[] = currencyList.currencies.map((currency: CurrencyType) => {
-        return <CurrencyLine key={currency.currencyCode} currency={currency} />;
+        return (
+            <CurrencyLine
+                key={currency.currencyCode}
+                currency={currency}
+                isSelected={selectedCurrency !== null && selectedCurrency.currencyCode === currency.currencyCode}
+            />
+        );
     });
 
     return (
@@ -23,9 +30,9 @@ const CurrencyList = ({ currencyList }: CurrencyListProps) => {
             <table className='currency-list-table'>
                 <thead>
                     <tr>
-                        <th>Měna</th>
-                        <th>Stát</th>
-                        <th>Kurz</th>
+                        <th>Currency</th>
+                        <th>Country</th>
+                        <th>Rate</th>
                     </tr>
                 </thead>
                 <tbody>
