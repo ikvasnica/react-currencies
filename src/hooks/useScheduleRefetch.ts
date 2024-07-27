@@ -3,23 +3,32 @@ import {useEffect} from "react";
 import {API_QUERY_KEY} from "./useCurrencies";
 import CurrencyListType from "../types/CurrencyListType";
 
-const getMillisecondsUntilTomorrowAfternoon = (): number => {
+const getMillisecondsUntilNextWorkingDayAfternoon = (): number => {
     const now = new Date();
-    const tomorrowAt1430 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 14, 30);
+    const nextWorkingDayAt1430 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 14, 30);
 
-    return tomorrowAt1430.getTime() - now.getTime();
+    // Adjust for weekends
+    const dayOfWeek = nextWorkingDayAt1430.getDay();
+    if (dayOfWeek === 0) {  // Sunday
+        nextWorkingDayAt1430.setDate(nextWorkingDayAt1430.getDate() + 1);  // Add one day to get to Monday
+    } else if (dayOfWeek === 6) {  // Saturday
+        nextWorkingDayAt1430.setDate(nextWorkingDayAt1430.getDate() + 2);  // Add two days to get to Monday
+    }
+
+    return nextWorkingDayAt1430.getTime() - now.getTime();
 }
 
-const scheduleRefetchForTomorrowAfternoon = (
+const scheduleRefetchForNextWorkingDayAfternoon = (
     queryClient: QueryClient,
     currencyDataQueryResult: QueryObserverResult<CurrencyListType>
 ): number => {
     queryClient.setQueryDefaults([API_QUERY_KEY], {enabled: false});
+    console.log('Scheduling for next refetch the next day...');
 
     return window.setTimeout(() => {
         queryClient.setQueryDefaults([API_QUERY_KEY], {enabled: true});
         currencyDataQueryResult.refetch();
-    }, getMillisecondsUntilTomorrowAfternoon());
+    }, getMillisecondsUntilNextWorkingDayAfternoon());
 }
 
 const useScheduleRefetch = (currencyDataQueryResult: QueryObserverResult<CurrencyListType>): void => {
@@ -28,8 +37,11 @@ const useScheduleRefetch = (currencyDataQueryResult: QueryObserverResult<Currenc
     useEffect(() => {
         let timerId: number|null = null;
 
-        if (currencyDataQueryResult.data && currencyDataQueryResult.data.ratesUpdatedAt.today) {
-            timerId = scheduleRefetchForTomorrowAfternoon(queryClient, currencyDataQueryResult);
+        if (
+            currencyDataQueryResult.data
+            && (currencyDataQueryResult.data.ratesUpdatedAt.today || currencyDataQueryResult.data.ratesUpdatedAt.beforeWeekend)
+        ) {
+            timerId = scheduleRefetchForNextWorkingDayAfternoon(queryClient, currencyDataQueryResult);
         }
 
         return (): void => {

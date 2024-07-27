@@ -22,13 +22,14 @@ const transformDataToCurrencies = (data: string): CurrencyListType => {
         return {
             date,
             today: isToday(date),
+            beforeWeekend: date.getDay() === 5,
         };
     };
     const lines: string[] = data.split('\n');
 
     if (lines.length < 3) {
         return {
-            ratesUpdatedAt: {date: null, today: false},
+            ratesUpdatedAt: {date: null, today: false, beforeWeekend: false},
             currencies: [],
         }
     }
