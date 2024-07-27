@@ -73,7 +73,8 @@ const useCurrencies = (): UseQueryResult<CurrencyListType> => {
         queryKey: [API_QUERY_KEY],
         queryFn: fetchCurrencies,
         select: transformDataToCurrencies,
-        staleTime: 5 * 60 * 1000,
+        staleTime: 5 * 60 * 1000, // 5 minutes
+        gcTime: 24 * 60 * 60 * 1000, // 24 hours
     });
 }
 
