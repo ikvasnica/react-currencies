@@ -59,7 +59,7 @@ const transformDataToCurrencies = (data: string): CurrencyListType => {
 
 const useCurrencies = (): UseQueryResult<CurrencyListType> => {
     const fetchCurrencies = async (): Promise<string> => {
-        console.log('[Currency Query] Fetching currencies..');
+        console.log('[Currency Query] Fetching currencies from API..');
         const response: Response = await fetch(
             API_URL, {
                 method: 'GET',
@@ -77,8 +77,6 @@ const useCurrencies = (): UseQueryResult<CurrencyListType> => {
         queryKey: [API_QUERY_KEY],
         queryFn: fetchCurrencies,
         select: transformDataToCurrencies,
-        staleTime: 5 * 60 * 1000, // 5 minutes
-        gcTime: 24 * 60 * 60 * 1000, // 24 hours
     });
 }
 
