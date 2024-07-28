@@ -19,7 +19,7 @@ interface CurrentyLineProps {
 
 const CurrencyLine = ({ currency, isSelected }: CurrentyLineProps) => {
     return (
-        <Line className={isSelected ? 'bg-blue-200' : ''}>
+        <Line className={isSelected ? 'bg-blue-300' : ''}>
             <Cell>{currency.currencyCode} ({currency.currencyName})</Cell>
             <Cell>{currency.country}</Cell>
             <Cell>{currency.amount} {currency.currencyCode}<br /><strong>{currency.rate} CZK</strong></Cell>

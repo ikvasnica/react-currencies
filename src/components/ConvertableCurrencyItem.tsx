@@ -67,7 +67,7 @@ const getSelectPlaceholder = (isLoading: boolean, currencies: Currency[]): strin
     }
 
     if (currencies.length === 1) {
-        const currencyOption = mapToOption(currencies[0]);
+        const currencyOption: CurrencySelectOptionType = mapToOption(currencies[0]);
 
         return currencyOption.label;
     }

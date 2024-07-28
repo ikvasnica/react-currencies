@@ -10,6 +10,7 @@ A simple React app that downloads currency data from the Czech National Bank and
 3. That's it!
 
 ### Tests
+- React Components tests: `npm test`
 - Browser tests in Playwright: `npx playwright test`
 
 ## Tech stack
