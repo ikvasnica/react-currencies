@@ -3,6 +3,7 @@ import React from "react";
 import CurrencyType from "../types/CurrencyType";
 import CurrencySelectOptionType from "../types/CurrencySelectOptionType";
 import tw from "tailwind-styled-components";
+import {NumericFormat as OriginalNumericFormat, OnValueChange} from "react-number-format";
 
 const ItemWrapper = tw.div`
     flex
@@ -14,7 +15,7 @@ const ItemWrapper = tw.div`
     rounded-lg
 `
 
-const AmountInput = tw.input`
+const NumericFormat = tw(OriginalNumericFormat)`
     mb-4
     text-center
     text-xl
@@ -28,14 +29,14 @@ const AmountInput = tw.input`
 
 const SelectWrapper = tw.div`
     text-gray-400 
-    w-56
+    w-80
 `;
 
 interface ConvertableCurrencyItemProps {
     amount: number,
     selectedCurrency: CurrencyType|null,
     currencies: CurrencyType[],
-    handleAmountChange: (event: React.FormEvent<HTMLInputElement>) => void,
+    handleAmountChange: OnValueChange,
     handleInputFocus: (event: React.FormEvent<HTMLInputElement>) => void,
     isLoading: boolean,
     handleCurrencyChange: (selectedOption: SingleValue<CurrencySelectOptionType>) => void,
@@ -43,7 +44,7 @@ interface ConvertableCurrencyItemProps {
 
 const mapToOption = (currency: CurrencyType): CurrencySelectOptionType => ({
     value: currency.currencyCode,
-    label: `${currency.currencyCode} ${currency.currencyName}`,
+    label: `${currency.country} ${currency.currencyName}`,
 });
 
 const getOptions = (currencies: CurrencyType[]): CurrencySelectOptionType[] => {
@@ -86,16 +87,19 @@ const ConvertableCurrencyItem = (
     }: ConvertableCurrencyItemProps) => {
     return (
         <ItemWrapper>
-            <AmountInput
+            <NumericFormat
                 id={selectedCurrency ? selectedCurrency.currencyCode : 'other'}
-                type="number"
-                min="0"
+                value={amount === 0 ? '' : amount}
+                decimalScale={2}
+                decimalSeparator=","
+                thousandSeparator=" "
+                suffix={` ${selectedCurrency?.currencyCode}`}
+                allowNegative={false}
                 placeholder={selectedCurrency
                     ? `Amount in ${selectedCurrency.currencyCode}`
                     : 'Converted amount'
                 }
-                value={amount === 0 ? '' : parseFloat(amount.toFixed(3))}
-                onChange={handleAmountChange}
+                onValueChange={handleAmountChange}
                 onFocus={handleInputFocus}
                 disabled={selectedCurrency === null && currencies.length > 1 && amount === 0}
             />

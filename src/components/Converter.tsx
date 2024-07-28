@@ -6,6 +6,7 @@ import {SingleValue} from "react-select";
 import CurrencyList from "./CurrencyList";
 import CurrencyListType from "../types/CurrencyListType";
 import tw from "tailwind-styled-components";
+import {NumberFormatValues, SourceInfo} from "react-number-format";
 
 const ConverterWrapper = tw.div`
     flex
@@ -44,7 +45,7 @@ const getCZKCurrency = (): CurrencyType => {
     return {
         currencyCode: 'CZK',
         currencyName: 'koruna',
-        country: 'Czech Republic',
+        country: 'Czech',
         rate: 1,
         amount: 1,
     }
@@ -61,8 +62,8 @@ const Converter = ({ currencyData, isLoading }: ConverterProps) => {
             return;
         }
 
-        const convertedAmount: number = amountInCZK / selectedCurrency.rate * selectedCurrency.amount;
-        setConvertedAmount(convertedAmount);
+        const newConvertedAmount: number = amountInCZK / selectedCurrency.rate * selectedCurrency.amount;
+        setConvertedAmount(newConvertedAmount);
     }, [amountInCZK, selectedCurrency, currencyAmountBeingEdited]);
 
     useEffect((): void => {
@@ -70,18 +71,21 @@ const Converter = ({ currencyData, isLoading }: ConverterProps) => {
             return;
         }
 
-        const amountInCZK: number = convertedAmount * selectedCurrency.rate / selectedCurrency.amount;
-        setAmountInCZK(amountInCZK);
+        const newAmountInCZK: number = convertedAmount * selectedCurrency.rate / selectedCurrency.amount;
+        setAmountInCZK(newAmountInCZK);
     }, [convertedAmount, selectedCurrency, currencyAmountBeingEdited]);
 
-    const handleCZKAmountChange = (event: React.FormEvent<HTMLInputElement>): void => {
-        const newAmount: number = Number(event.currentTarget.value);
-        setAmountInCZK(newAmount < 0 ? 0 : newAmount);
-    }
+    const handleAmountValueChange = (values: NumberFormatValues, sourceInfo: SourceInfo): void => {
+        if (sourceInfo.source !== 'event') {
+            return;
+        }
 
-    const handleConvertedAmountChange = (event: React.FormEvent<HTMLInputElement>): void => {
-        const newAmount: number = Number(event.currentTarget.value);
-        setConvertedAmount(newAmount < 0 ? 0 : newAmount);
+        const newAmount: number = values.floatValue || 0;
+        if (sourceInfo.event?.currentTarget.id === getCZKCurrency().currencyCode) {
+            setAmountInCZK(newAmount)
+        } else {
+            setConvertedAmount(newAmount);
+        }
     }
 
     const handleCurrencyChange = (selectedOption: SingleValue<CurrencySelectOptionType>): void => {
@@ -110,7 +114,7 @@ const Converter = ({ currencyData, isLoading }: ConverterProps) => {
                     amount={amountInCZK}
                     selectedCurrency={czkCurrency}
                     currencies={[czkCurrency]}
-                    handleAmountChange={handleCZKAmountChange}
+                    handleAmountChange={handleAmountValueChange}
                     handleCurrencyChange={handleCurrencyChange}
                     handleInputFocus={handleFocus}
                     isLoading={isLoading}
@@ -121,7 +125,7 @@ const Converter = ({ currencyData, isLoading }: ConverterProps) => {
                     amount={convertedAmount}
                     selectedCurrency={selectedCurrency}
                     currencies={currencyData ? currencyData.currencies : []}
-                    handleAmountChange={handleConvertedAmountChange}
+                    handleAmountChange={handleAmountValueChange}
                     handleCurrencyChange={handleCurrencyChange}
                     handleInputFocus={handleFocus}
                     isLoading={isLoading}
