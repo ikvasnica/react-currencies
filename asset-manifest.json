@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/react-currencies/static/css/main.5f76ecfe.css",
+    "main.js": "/react-currencies/static/js/main.957ed197.js",
+    "index.html": "/react-currencies/index.html",
+    "main.5f76ecfe.css.map": "/react-currencies/static/css/main.5f76ecfe.css.map",
+    "main.957ed197.js.map": "/react-currencies/static/js/main.957ed197.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5f76ecfe.css",
+    "static/js/main.957ed197.js"
+  ]
+}
