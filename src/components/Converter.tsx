@@ -1,10 +1,10 @@
-import CurrencyType from "../types/CurrencyType";
+import Currency from "../types/Currency";
 import React, {useEffect, useState} from "react";
 import CurrencySelectOptionType from "../types/CurrencySelectOptionType";
 import ConvertableCurrencyItem from "./ConvertableCurrencyItem";
 import {SingleValue} from "react-select";
 import CurrencyList from "./CurrencyList";
-import CurrencyListType from "../types/CurrencyListType";
+import CurrencyRates from "../types/CurrencyRates";
 import tw from "tailwind-styled-components";
 import {NumberFormatValues, SourceInfo} from "react-number-format";
 
@@ -37,11 +37,11 @@ const Separator = tw.div`
 `;
 
 interface ConverterProps {
-    currencyData: CurrencyListType|null,
+    currencyData: CurrencyRates|null,
     isLoading: boolean,
 }
 
-const getCZKCurrency = (): CurrencyType => {
+const getCZKCurrency = (): Currency => {
     return {
         currencyCode: 'CZK',
         currencyName: 'koruna',
@@ -53,7 +53,7 @@ const getCZKCurrency = (): CurrencyType => {
 
 const Converter = ({ currencyData, isLoading }: ConverterProps) => {
     const [currencyAmountBeingEdited, setCurrencyAmountBeingEdited] = useState<string|null>(null);
-    const [selectedCurrency, setSelectedCurrency] = useState<CurrencyType|null>(null);
+    const [selectedCurrency, setSelectedCurrency] = useState<Currency|null>(null);
     const [amountInCZK, setAmountInCZK] = useState<number>(0);
     const [convertedAmount, setConvertedAmount] = useState<number>(0);
 
@@ -93,9 +93,9 @@ const Converter = ({ currencyData, isLoading }: ConverterProps) => {
             return;
         }
 
-        const selectedCurrency = currencyData?.currencies.find((currency: CurrencyType ): boolean => {
+        const selectedCurrency = currencyData?.currencies.find((currency: Currency ): boolean => {
             return currency.currencyCode === selectedOption.value;
-        }) as CurrencyType;
+        }) as Currency;
 
         setSelectedCurrency(selectedCurrency);
     }
@@ -104,7 +104,7 @@ const Converter = ({ currencyData, isLoading }: ConverterProps) => {
         setCurrencyAmountBeingEdited(event.currentTarget.id);
     }
 
-    const czkCurrency: CurrencyType = getCZKCurrency();
+    const czkCurrency: Currency = getCZKCurrency();
 
     return (
         <ConverterWrapper>

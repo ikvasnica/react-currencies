@@ -1,4 +1,4 @@
-import CurrencyType from '../types/CurrencyType';
+import Currency from '../types/Currency';
 import tw from "tailwind-styled-components";
 
 const Line = tw.tr`
@@ -13,7 +13,7 @@ const Cell = tw.td`
 `
 
 interface CurrentyLineProps {
-    currency: CurrencyType,
+    currency: Currency,
     isSelected: boolean,
 }
 

@@ -1,13 +1,13 @@
-import CurrencyType from "../types/CurrencyType";
-import CurrencyListType from "../types/CurrencyListType";
-import RatesUpdatedAtType from "../types/RatesUpdatedAtType";
+import Currency from "../types/Currency";
+import CurrencyRates from "../types/CurrencyRates";
+import RatesUpdatedAtDate from "../types/RatesUpdatedAtDate";
 import {useQuery, UseQueryResult} from "@tanstack/react-query";
 
 const API_URL: string = 'https://cors-proxy.ivan-531.workers.dev/?https://www.cnb.cz/en/financial-markets/foreign-exchange-market/central-bank-exchange-rate-fixing/central-bank-exchange-rate-fixing/daily.txt';
 const API_QUERY_KEY: string = 'currencies';
 
-const transformDataToCurrencies = (data: string): CurrencyListType => {
-    const getRatesUpdatedAt = (lines: string[]): RatesUpdatedAtType => {
+const transformDataToCurrencies = (data: string): CurrencyRates => {
+    const getRatesUpdatedAt = (lines: string[]): RatesUpdatedAtDate => {
         const isToday = (date: Date): boolean => {
             const today = new Date();
 
@@ -39,7 +39,7 @@ const transformDataToCurrencies = (data: string): CurrencyListType => {
     const currencies = lines
         .slice(2)
         .filter(line => line) // remove the last empty line
-        .map((line: string): CurrencyType => {
+        .map((line: string): Currency => {
             const [country, currencyName, amount, currencyCode, rate] = line.split('|');
 
             return {
@@ -57,7 +57,7 @@ const transformDataToCurrencies = (data: string): CurrencyListType => {
     return {ratesUpdatedAt, currencies};
 };
 
-const useCurrencies = (): UseQueryResult<CurrencyListType> => {
+const useCurrencies = (): UseQueryResult<CurrencyRates> => {
     const fetchCurrencies = async (): Promise<string> => {
         console.log('[Currency Query] Fetching currencies from API..');
         const response: Response = await fetch(

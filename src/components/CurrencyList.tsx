@@ -1,7 +1,7 @@
-import CurrencyType from '../types/CurrencyType';
+import Currency from '../types/Currency';
 import CurrencyLine from './CurrencyLine';
 import {ReactElement} from "react";
-import CurrencyListType from "../types/CurrencyListType";
+import CurrencyRates from "../types/CurrencyRates";
 import tw from "tailwind-styled-components";
 
 const CurrencyListWrapper = tw.div`
@@ -38,13 +38,13 @@ const TableHeading = tw.th`
 `
 
 interface CurrencyListProps {
-    currencyList: CurrencyListType,
-    selectedCurrency: CurrencyType|null,
+    currencyList: CurrencyRates,
+    selectedCurrency: Currency|null,
 }
 
 const CurrencyList = ({ currencyList, selectedCurrency }: CurrencyListProps) => {
     const renderedCurrencyLines: ReactElement[] = [...currencyList.currencies]
-        .sort((a: CurrencyType, b: CurrencyType) => {
+        .sort((a: Currency, b: Currency) => {
             if (selectedCurrency !== null && a.currencyCode === selectedCurrency.currencyCode) {
                 return -1; // selectedCurrency comes first
             }
@@ -63,7 +63,7 @@ const CurrencyList = ({ currencyList, selectedCurrency }: CurrencyListProps) => 
 
             return 0; // equals
         })
-        .map((currency: CurrencyType) => {
+        .map((currency: Currency) => {
             return (
                 <CurrencyLine
                     key={currency.currencyCode}

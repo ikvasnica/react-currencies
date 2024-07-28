@@ -1,4 +1,4 @@
-export default interface RatesUpdatedAtType {
+export default interface RatesUpdatedAtDate {
     date: Date|null,
     today: boolean,
     beforeWeekend: boolean,

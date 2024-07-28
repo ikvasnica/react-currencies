@@ -1,6 +1,6 @@
 import useCurrencies from "../hooks/useCurrencies";
 import {UseQueryResult} from "@tanstack/react-query";
-import CurrencyListType from "../types/CurrencyListType";
+import CurrencyRates from "../types/CurrencyRates";
 import Converter from "./Converter";
 import useScheduleRefetch from "../hooks/useScheduleRefetch";
 import tw from "tailwind-styled-components"
@@ -49,7 +49,7 @@ const Error = tw.div`
 `
 
 const App = () => {
-    const currencyData: UseQueryResult<CurrencyListType> = useCurrencies();
+    const currencyData: UseQueryResult<CurrencyRates> = useCurrencies();
     useScheduleRefetch(currencyData);
 
     return (

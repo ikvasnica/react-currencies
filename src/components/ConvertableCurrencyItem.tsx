@@ -1,6 +1,6 @@
 import Select, {SingleValue} from "react-select";
 import React from "react";
-import CurrencyType from "../types/CurrencyType";
+import Currency from "../types/Currency";
 import CurrencySelectOptionType from "../types/CurrencySelectOptionType";
 import tw from "tailwind-styled-components";
 import {NumericFormat as OriginalNumericFormat, OnValueChange} from "react-number-format";
@@ -34,34 +34,34 @@ const SelectWrapper = tw.div`
 
 interface ConvertableCurrencyItemProps {
     amount: number,
-    selectedCurrency: CurrencyType|null,
-    currencies: CurrencyType[],
+    selectedCurrency: Currency|null,
+    currencies: Currency[],
     handleAmountChange: OnValueChange,
     handleInputFocus: (event: React.FormEvent<HTMLInputElement>) => void,
     isLoading: boolean,
     handleCurrencyChange: (selectedOption: SingleValue<CurrencySelectOptionType>) => void,
 }
 
-const mapToOption = (currency: CurrencyType): CurrencySelectOptionType => ({
+const mapToOption = (currency: Currency): CurrencySelectOptionType => ({
     value: currency.currencyCode,
     label: `${currency.country} ${currency.currencyName}`,
 });
 
-const getOptions = (currencies: CurrencyType[]): CurrencySelectOptionType[] => {
+const getOptions = (currencies: Currency[]): CurrencySelectOptionType[] => {
     const preferredCurrencyCodes: string[] = ['EUR', 'USD', 'GBP'];
 
     const preferredOptions: CurrencySelectOptionType[] = currencies
-        .filter((currency: CurrencyType) => preferredCurrencyCodes.includes(currency.currencyCode))
+        .filter((currency: Currency) => preferredCurrencyCodes.includes(currency.currencyCode))
         .map(mapToOption);
 
     const otherOptions: CurrencySelectOptionType[] = currencies
-        .filter((currency: CurrencyType) => !preferredCurrencyCodes.includes(currency.currencyCode))
+        .filter((currency: Currency) => !preferredCurrencyCodes.includes(currency.currencyCode))
         .map(mapToOption);
 
     return [...preferredOptions, ...otherOptions];
 }
 
-const getSelectPlaceholder = (isLoading: boolean, currencies: CurrencyType[]): string => {
+const getSelectPlaceholder = (isLoading: boolean, currencies: Currency[]): string => {
     if (isLoading) {
         return 'Loading...';
     }

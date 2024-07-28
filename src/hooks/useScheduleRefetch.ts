@@ -1,7 +1,7 @@
 import {QueryClient, QueryObserverResult, useQueryClient} from "@tanstack/react-query";
 import {useEffect} from "react";
 import {API_QUERY_KEY} from "./useCurrencies";
-import CurrencyListType from "../types/CurrencyListType";
+import CurrencyRates from "../types/CurrencyRates";
 
 const getMillisecondsUntilNextWorkingDayAfternoon = (): number => {
     const now = new Date();
@@ -21,7 +21,7 @@ const getMillisecondsUntilNextWorkingDayAfternoon = (): number => {
 
 const scheduleRefetchForNextWorkingDayAfternoon = (
     queryClient: QueryClient,
-    currencyDataQueryResult: QueryObserverResult<CurrencyListType>
+    currencyDataQueryResult: QueryObserverResult<CurrencyRates>
 ): number => {
     queryClient.setQueryDefaults([API_QUERY_KEY], {enabled: false});
 
@@ -32,7 +32,7 @@ const scheduleRefetchForNextWorkingDayAfternoon = (
     }, getMillisecondsUntilNextWorkingDayAfternoon());
 }
 
-const useScheduleRefetch = (currencyDataQueryResult: QueryObserverResult<CurrencyListType>): void => {
+const useScheduleRefetch = (currencyDataQueryResult: QueryObserverResult<CurrencyRates>): void => {
     const queryClient = useQueryClient();
 
     useEffect(() => {
