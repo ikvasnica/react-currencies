@@ -2,6 +2,34 @@ import Select, {SingleValue} from "react-select";
 import React from "react";
 import CurrencyType from "../types/CurrencyType";
 import CurrencySelectOptionType from "../types/CurrencySelectOptionType";
+import tw from "tailwind-styled-components";
+
+const ItemWrapper = tw.div`
+    flex
+    flex-col
+    items-center
+    justify-center
+    w-full
+    my-6
+    rounded-lg
+`
+
+const AmountInput = tw.input`
+    mb-4
+    text-center
+    text-xl
+    py-2
+    w-full
+    rounded
+    border
+    focus:border-blue-500
+    focus:outline-none
+`
+
+const SelectWrapper = tw.div`
+    text-gray-400 
+    w-56
+`;
 
 interface ConvertableCurrencyItemProps {
     amount: number,
@@ -43,7 +71,7 @@ const getSelectPlaceholder = (isLoading: boolean, currencies: CurrencyType[]): s
         return currencyOption.label;
     }
 
-    return 'Pick currency for conversion';
+    return 'Pick currency';
 }
 
 const ConvertableCurrencyItem = (
@@ -57,8 +85,8 @@ const ConvertableCurrencyItem = (
         handleCurrencyChange,
     }: ConvertableCurrencyItemProps) => {
     return (
-        <div className="currency-converter-convertable-item">
-            <input
+        <ItemWrapper>
+            <AmountInput
                 id={selectedCurrency ? selectedCurrency.currencyCode : 'other'}
                 type="number"
                 min="0"
@@ -69,17 +97,24 @@ const ConvertableCurrencyItem = (
                 value={amount === 0 ? '' : parseFloat(amount.toFixed(3))}
                 onChange={handleAmountChange}
                 onFocus={handleInputFocus}
+                disabled={selectedCurrency === null && currencies.length > 1 && amount === 0}
             />
-            <Select
-                options={getOptions(currencies)}
-                placeholder={getSelectPlaceholder(isLoading, currencies)}
-                isDisabled={currencies.length <= 1}
-                isSearchable={true}
-                onChange={handleCurrencyChange}
-                noOptionsMessage={({inputValue}) => `No currency found with the name or code "${inputValue}"`}
-                isLoading={isLoading}
-            />
-        </div>
+            <SelectWrapper>
+                <Select
+                    options={getOptions(currencies)}
+                    placeholder={getSelectPlaceholder(isLoading, currencies)}
+                    isDisabled={currencies.length <= 1}
+                    isSearchable={true}
+                    onChange={handleCurrencyChange}
+                    noOptionsMessage={({inputValue}) => `No currency found with the name or code "${inputValue}"`}
+                    isLoading={isLoading}
+                    styles={{
+                        menu: (provided) => ({...provided, color: 'black'}),
+                        control: (provided) => ({...provided, color: 'black'}),
+                    }}
+                />
+            </SelectWrapper>
+        </ItemWrapper>
     );
 }
 

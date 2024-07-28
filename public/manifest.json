@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "CNB Currency Converter",
+  "name": "Download latest currency rates and allow to convert between CZK and other currencies.",
   "icons": [
     {
       "src": "favicon.ico",

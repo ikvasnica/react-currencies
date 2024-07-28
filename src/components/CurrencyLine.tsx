@@ -1,4 +1,16 @@
 import CurrencyType from '../types/CurrencyType';
+import tw from "tailwind-styled-components";
+
+const Line = tw.tr`
+    hover:bg-blue-200
+`
+
+const Cell = tw.td`
+    border
+    px-4
+    py-2
+    text-left
+`
 
 interface CurrentyLineProps {
     currency: CurrencyType,
@@ -7,11 +19,11 @@ interface CurrentyLineProps {
 
 const CurrencyLine = ({ currency, isSelected }: CurrentyLineProps) => {
     return (
-        <tr style={isSelected ? {backgroundColor: "hsla(0, 100%, 50%, 0.1)"} : {}}>
-            <td>{currency.currencyCode} ({currency.currencyName})</td>
-            <td>{currency.country}</td>
-            <td>{currency.amount} {currency.currencyCode}<br />{currency.rate} CZK</td>
-        </tr>
+        <Line className={isSelected ? 'bg-blue-200' : ''}>
+            <Cell>{currency.currencyCode} ({currency.currencyName})</Cell>
+            <Cell>{currency.country}</Cell>
+            <Cell>{currency.amount} {currency.currencyCode}<br /><strong>{currency.rate} CZK</strong></Cell>
+        </Line>
     )
 };
 

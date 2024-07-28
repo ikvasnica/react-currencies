@@ -5,6 +5,35 @@ import ConvertableCurrencyItem from "./ConvertableCurrencyItem";
 import {SingleValue} from "react-select";
 import CurrencyList from "./CurrencyList";
 import CurrencyListType from "../types/CurrencyListType";
+import tw from "tailwind-styled-components";
+
+const ConverterWrapper = tw.div`
+    flex
+    flex-col
+    items-start
+    justify-center
+    w-full
+    md:flex-row
+    mt-6
+`
+
+const ConversionControlWrapper = tw.div`
+    flex
+    flex-col
+    items-center
+    h-auto
+    w-full
+    md:w-1/3
+    md:ml-8
+    md:mr-8
+`
+
+const Separator = tw.div`
+    border-t
+    my-4
+    mx-auto
+    w-4/5
+`;
 
 interface ConverterProps {
     currencyData: CurrencyListType|null,
@@ -71,34 +100,37 @@ const Converter = ({ currencyData, isLoading }: ConverterProps) => {
         setCurrencyAmountBeingEdited(event.currentTarget.id);
     }
 
-    const czkCurrency = getCZKCurrency();
+    const czkCurrency: CurrencyType = getCZKCurrency();
 
     return (
-        <div className='currency-converter'>
+        <ConverterWrapper>
+            <ConversionControlWrapper>
+                <ConvertableCurrencyItem
+                    key="czk"
+                    amount={amountInCZK}
+                    selectedCurrency={czkCurrency}
+                    currencies={[czkCurrency]}
+                    handleAmountChange={handleCZKAmountChange}
+                    handleCurrencyChange={handleCurrencyChange}
+                    handleInputFocus={handleFocus}
+                    isLoading={isLoading}
+                />
+                <Separator />
+                <ConvertableCurrencyItem
+                    key="other"
+                    amount={convertedAmount}
+                    selectedCurrency={selectedCurrency}
+                    currencies={currencyData ? currencyData.currencies : []}
+                    handleAmountChange={handleConvertedAmountChange}
+                    handleCurrencyChange={handleCurrencyChange}
+                    handleInputFocus={handleFocus}
+                    isLoading={isLoading}
+                />
+            </ConversionControlWrapper>
             {currencyData && (
                 <CurrencyList currencyList={currencyData} selectedCurrency={selectedCurrency} />
             )}
-            <ConvertableCurrencyItem
-                key="czk"
-                amount={amountInCZK}
-                selectedCurrency={czkCurrency}
-                currencies={[czkCurrency]}
-                handleAmountChange={handleCZKAmountChange}
-                handleCurrencyChange={handleCurrencyChange}
-                handleInputFocus={handleFocus}
-                isLoading={isLoading}
-            />
-            <ConvertableCurrencyItem
-                key="other"
-                amount={convertedAmount}
-                selectedCurrency={selectedCurrency}
-                currencies={currencyData ? currencyData.currencies : []}
-                handleAmountChange={handleConvertedAmountChange}
-                handleCurrencyChange={handleCurrencyChange}
-                handleInputFocus={handleFocus}
-                isLoading={isLoading}
-            />
-        </div>
+        </ConverterWrapper>
     );
 }
 
