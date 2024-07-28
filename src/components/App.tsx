@@ -56,7 +56,7 @@ const App = () => {
         <AppContainer>
             <AppName>💸 Currency Converter</AppName>
             {(currencyData.isLoading || currencyData.isFetching) && (
-                <LoadingOverlay><SyncLoader color={"#2563EB"} size={100}/></LoadingOverlay>
+                <LoadingOverlay id="loading"><SyncLoader color={"#2563EB"} size={100}/></LoadingOverlay>
             )}
             {currencyData.isError && (
                 <Error>Error: {currencyData.error.message}</Error>

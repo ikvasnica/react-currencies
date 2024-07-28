@@ -3,10 +3,14 @@ A simple React app that downloads currency data from the Czech National Bank and
 
 ### [Demo App on GitHub Pages](https://ikvasnica.github.io/react-currencies/)
 
-## How to run locally
+## Development
+### How to run locally
 1. Install the dependencies with `npm install`
 2. Start the development server by running `npm start`.
 3. That's it!
+
+### Tests
+- Browser tests in Playwright: `npx playwright test`
 
 ## Tech stack
 - React.js + TypeScript

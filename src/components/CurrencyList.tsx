@@ -81,7 +81,7 @@ const CurrencyList = ({ currencyList, selectedCurrency }: CurrencyListProps) => 
                     : `${currencyList.ratesUpdatedAt.date.toLocaleDateString('en-US', {weekday: 'long'})} (${currencyList.ratesUpdatedAt.date.toLocaleDateString()})`
                 }</SubTitle>
             )}
-            <ConverterTable>
+            <ConverterTable id='converter-table'>
                 <thead>
                     <tr>
                         <TableHeading>Currency</TableHeading>
