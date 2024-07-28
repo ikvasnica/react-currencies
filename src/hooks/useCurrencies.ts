@@ -3,7 +3,7 @@ import CurrencyListType from "../types/CurrencyListType";
 import RatesUpdatedAtType from "../types/RatesUpdatedAtType";
 import {useQuery, UseQueryResult} from "@tanstack/react-query";
 
-const API_URL: string = 'https://thingproxy.freeboard.io/fetch/https://www.cnb.cz/en/financial-markets/foreign-exchange-market/central-bank-exchange-rate-fixing/central-bank-exchange-rate-fixing/daily.txt';
+const API_URL: string = 'https://cors-proxy.ivan-531.workers.dev/?https://www.cnb.cz/en/financial-markets/foreign-exchange-market/central-bank-exchange-rate-fixing/central-bank-exchange-rate-fixing/daily.txt';
 const API_QUERY_KEY: string = 'currencies';
 
 const transformDataToCurrencies = (data: string): CurrencyListType => {
