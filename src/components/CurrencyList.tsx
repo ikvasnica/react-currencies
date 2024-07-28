@@ -77,8 +77,8 @@ const CurrencyList = ({ currencyList, selectedCurrency }: CurrencyListProps) => 
         <CurrencyListWrapper>
             {currencyList.ratesUpdatedAt.date && (
                 <SubTitle>Daily rates for {currencyList.ratesUpdatedAt.today
-                    ? 'today'
-                    : currencyList.ratesUpdatedAt.date.toLocaleDateString()
+                    ? 'TODAY'
+                    : `${currencyList.ratesUpdatedAt.date.toLocaleDateString('en-US', {weekday: 'long'})} (${currencyList.ratesUpdatedAt.date.toLocaleDateString()})`
                 }</SubTitle>
             )}
             <ConverterTable>
