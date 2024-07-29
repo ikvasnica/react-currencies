@@ -32,6 +32,18 @@ const scheduleRefetchForNextWorkingDayAfternoon = (
     }, getMillisecondsUntilNextWorkingDayAfternoon());
 }
 
+const shouldScheduleRefetch = (currencyData: CurrencyRates): boolean => {
+    const todayDay: number = (new Date()).getDay();
+    const weekendDays: number[] = [0, 6];
+    const currencyDataDay: number|undefined = currencyData.ratesUpdatedAt.date?.getDay();
+
+    if (currencyData.ratesUpdatedAt.today && currencyDataDay === todayDay) {
+        return true;
+    }
+
+    return currencyData.ratesUpdatedAt.beforeWeekend && weekendDays.includes(todayDay);
+}
+
 const useScheduleRefetch = (currencyDataQueryResult: QueryObserverResult<CurrencyRates>): void => {
     const queryClient = useQueryClient();
 
@@ -39,13 +51,11 @@ const useScheduleRefetch = (currencyDataQueryResult: QueryObserverResult<Currenc
         let timerId: number|null = null;
         console.log('[Refetch Scheduler] Refetch schedule check...');
 
-        if (
-            currencyDataQueryResult.data
-            && (currencyDataQueryResult.data.ratesUpdatedAt.today || currencyDataQueryResult.data.ratesUpdatedAt.beforeWeekend)
-        ) {
+        if (currencyDataQueryResult.data && shouldScheduleRefetch(currencyDataQueryResult.data)) {
             timerId = scheduleRefetchForNextWorkingDayAfternoon(queryClient, currencyDataQueryResult);
             console.log('[Refetch Scheduler] Refetch scheduled for the next working day.');
         }
+        console.log('[Refetch Scheduler] Refetch schedule check DONE.');
 
         return (): void => {
             console.log('[Refetch Scheduler] Checking for stale timers...');
